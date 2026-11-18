@@ -1,0 +1,48 @@
+# Free test deploy. The web service sleeps after 15 minutes without a visit.
+# The free database expires 30 days after creation and has no backups.
+# This file does not use the paid 0.5c-512mb or 0.1c-256mb plans.
+
+databases:
+  - name: cvs-coupons-db
+    plan: free
+    databaseName: cvscoupons
+    user: cvscoupons
+    ipAllowList: []
+
+services:
+  - type: web
+    name: cvs-coupons
+    runtime: node
+    plan: free
+    numInstances: 1
+    autoDeployTrigger: off
+    buildCommand: npm install --prefix backend --omit=dev && npm install --prefix frontend && npm run build --prefix frontend
+    startCommand: npm start --prefix backend
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "5000"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: cvs-coupons-db
+          property: connectionString
+      - key: ACCESS_TOKEN
+        generateValue: true
+      - key: SYNC_INTERVAL_MS
+        value: "60000"
+      - key: SCAN_LIMIT
+        value: "5"
+      - key: GMAIL_LABEL
+        value: CVS
+      - key: CORS_ORIGIN
+        sync: false
+      - key: GMAIL_USER
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: GOOGLE_REFRESH_TOKEN
+        sync: false

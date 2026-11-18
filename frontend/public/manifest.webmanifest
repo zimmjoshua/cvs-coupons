@@ -1,0 +1,11 @@
+{
+  "name": "Coupons",
+  "short_name": "Coupons",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f3efe8",
+  "theme_color": "#f3efe8",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
